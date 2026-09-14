@@ -1,0 +1,13 @@
+torch>=2.2
+torchvision>=0.17
+open_clip_torch>=2.26
+transformers>=4.40
+umap-learn>=0.5
+hdbscan>=0.8.33
+plotly>=6.0
+numpy>=1.26
+scikit-learn>=1.4
+matplotlib>=3.8
+Pillow>=10.0
+PyYAML>=6.0
+pytest>=8.0
