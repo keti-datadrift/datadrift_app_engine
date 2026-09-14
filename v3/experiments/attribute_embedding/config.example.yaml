@@ -1,0 +1,40 @@
+schema_version: 1
+# Copy to config.yaml (gitignored) and fill local paths / channel folder names.
+input_root: /absolute/path/to/local/retail_pack
+output_root: artifacts/attribute_embedding
+model_id: Marqo/marqo-fashionSigLIP
+model_revision: c56244cc94f92419e8369fa71efdaf403b124ce8
+seed: 42
+sample_per_family: 200
+candidate_multiplier: 3
+# Public aliases only appear in outputs. disk_name is the on-disk channel folder.
+sources:
+  retail_a:
+    disk_name: REPLACE_ME_CHANNEL_A
+    format: ranking_items
+  retail_b:
+    disk_name: REPLACE_ME_CHANNEL_B
+    format: survey_signals
+families:
+  - tops
+  - outerwear
+  - bottoms
+  - dresses
+  - shoes
+  - bags
+  - sport
+  - headwear
+batch_size: 16
+device: auto
+umap:
+  n_neighbors: 30
+  min_dist: 0.12
+  metric: cosine
+clustering:
+  min_cluster_size: 18
+  min_samples: 5
+  metric: euclidean
+evaluation:
+  neighbor_k: 10
+  bootstrap_iterations: 300
+  query_contact_sheets: 8
