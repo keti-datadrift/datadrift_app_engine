@@ -1,0 +1,38 @@
+schema_version: 1
+dataset_run: tops-450-20260918
+box_run: REPLACE_ME_GROUNDED_SAM21_RUN
+mask_run: REPLACE_ME_SEGFORMER_RUN
+box_model: grounded_sam21
+box_resolver: torso_prior
+mask_model: segformer
+mask_resolver: combined
+output_root: artifacts/garment_segmentation
+encoder_id: Marqo/marqo-fashionSigLIP
+device: auto
+batch_size: 8
+seed: 42
+# arms: [A, B, C, D]
+preprocess:
+  pad_ratio: 0.12
+  dilate_px: 7
+  alpha_sigma: 5.0
+  background_blur_sigma: 21.0
+  min_mask_fill: 0.08
+  garment_labels:
+    - upper-clothes
+    - dress
+    - top
+    - shirt
+    - blouse
+    - knit
+    - hoodie
+    - sweater
+    - t-shirt
+    - tshirt
+umap:
+  n_neighbors: 30
+  min_dist: 0.12
+evaluation:
+  neighbor_k: 10
+  bootstrap_iterations: 300
+  cluster_min_size: 18

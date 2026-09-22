@@ -1,0 +1,56 @@
+schema_version: 1
+# Copy to config.yaml (gitignored) and fill local paths / channel folder names.
+input_root: /absolute/path/to/local/retail_pack
+output_root: artifacts/garment_segmentation
+encoder_id: Marqo/marqo-fashionSigLIP
+seed: 42
+n_dev: 50
+n_primary: 300
+n_stress: 100
+pool_size: 900
+candidate_multiplier: 3
+sources:
+  retail_a:
+    disk_name: REPLACE_ME_CHANNEL_A
+    format: ranking_items
+  retail_b:
+    disk_name: REPLACE_ME_CHANNEL_B
+    format: survey_signals
+models:
+  - yolo
+  - segformer
+  - clipseg
+include_optional: false
+include_dummy: false
+download_weights: false
+device: cpu
+box_threshold: 0.25
+text_threshold: 0.25
+mask_threshold: 0.5
+max_proposals: 12
+prompts:
+  - shirt
+  - t-shirt
+  - top
+  - blouse
+  - knitwear
+  - hoodie
+  - sweater
+resolver_weights:
+  area: 0.25
+  torso: 0.20
+  confidence: 0.15
+  metadata: 0.40
+checkpoints:
+  grounded_sam21:
+    detector: IDEA-Research/grounding-dino-tiny
+    segmentor: facebook/sam2.1-hiera-tiny
+  sam3: facebook/sam3
+  fashionpedia: valentinafeve/yolos-fashionpedia
+  yolo: valentinafeve/yolos-fashionpedia
+  schp: mattmdjaga/segformer_b2_clothes
+  segformer: mattmdjaga/segformer_b2_clothes
+  clipseg: CIDAS/clipseg-rd64-refined
+  owlv2_sam:
+    detector: google/owlv2-base-patch16-ensemble
+    segmentor: facebook/sam2.1-hiera-tiny
