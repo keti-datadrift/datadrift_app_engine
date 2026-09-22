@@ -10,6 +10,10 @@ notebooks/data
 notebooks/.ipynb_checkpoints
 artifacts/
 experiments/attribute_embedding/config.yaml
+experiments/garment_segmentation/config.yaml
+experiments/garment_segmentation/config.sam.yaml
+experiments/garment_segmentation/config.preprocess.yaml
+experiments/garment_segmentation/config.preprocess.sam3.yaml
 
 # Kaggle credentials (never commit)
 .kaggle/

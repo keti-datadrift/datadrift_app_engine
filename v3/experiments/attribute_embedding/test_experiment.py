@@ -9,7 +9,8 @@ HERE = Path(__file__).resolve().parent
 if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
 
-from dataset import resolve_family, weak_labels, normalize_sources
+from dataset import normalize_sources, resolve_family, weak_labels
+from followup_experiment import neighborhood_jaccard, procrustes_align
 from representations import residualize_by_family
 
 
@@ -66,3 +67,24 @@ def test_residualization_uses_train_centroid_and_normalizes() -> None:
     assert residual.shape == raw.shape
     assert np.allclose(np.linalg.norm(residual, axis=1), 1.0, atol=1e-5)
     assert not np.allclose(residual, raw)
+
+
+def test_procrustes_alignment_recovers_rotated_coordinates() -> None:
+    reference = np.asarray(
+        [[0.0, 0.0], [1.0, 0.0], [0.0, 2.0], [1.0, 2.0]],
+        dtype=np.float32,
+    )
+    rotation = np.asarray([[0.0, -1.0], [1.0, 0.0]], dtype=np.float32)
+    moving = reference @ rotation * 3.0 + np.asarray([4.0, -2.0])
+    aligned, disparity = procrustes_align(reference, moving)
+    assert disparity < 1e-10
+    assert np.allclose(aligned, reference, atol=1e-5)
+
+
+def test_neighborhood_jaccard_is_invariant_to_rotation() -> None:
+    coords = np.asarray(
+        [[0.0, 0.0], [1.0, 0.0], [4.0, 0.0], [5.0, 0.0]],
+        dtype=np.float32,
+    )
+    rotated = coords @ np.asarray([[0.0, -1.0], [1.0, 0.0]])
+    assert neighborhood_jaccard(coords, rotated, k=1) == 1.0

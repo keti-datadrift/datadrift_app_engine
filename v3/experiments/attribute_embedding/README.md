@@ -52,3 +52,27 @@ cp experiments/attribute_embedding/config.example.yaml experiments/attribute_emb
 ```
 
 산출물: `artifacts/attribute_embedding/family-dr-<family>-<source-run>/index.html`
+
+## 후속 비교·속성 방향 실험
+
+작성일: 2026-09-14
+
+기존 `A_raw` 이미지 임베딩을 재사용해 다음 두 단계를 한 번에 수행한다.
+
+1. 전체 raw PCA64→UMAP, 그중 tops 확대, tops-only PCA64→UMAP,
+   Procrustes 정렬 결과를 같은 제품 기준으로 비교한다.
+2. 형태·패턴의 zero-shot 텍스트 방향, weak-label centroid 방향,
+   선형 probe 방향을 비교하고 선택된 방향으로 부분공간을 구성해 군집화한다.
+
+이미지 인코더는 재학습하지 않는다.
+
+```bash
+./.venv/bin/python experiments/attribute_embedding/followup_experiment.py \
+  --source-run mvp-20260911-v2 \
+  --family tops
+```
+
+산출물은 `artifacts/attribute_embedding/followup-tops-<timestamp>/`에 생성된다.
+`index.html`에는 연결 hover 이미지가 있는 전역/local 비교 스캐터, 속성
+부분공간 군집, 속성별 정렬 결과가 포함된다. `annotation_template.csv`에
+수동 라벨을 추가한 뒤에는 weak label과 분리된 검증 세트로 재평가해야 한다.
